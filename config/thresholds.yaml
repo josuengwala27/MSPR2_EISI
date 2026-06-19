@@ -1,0 +1,56 @@
+# Seuils de conservation par pays — FutureKawa MSPR TPRE814
+# Source : cahier des charges § III.2
+# Tolérance globale : ±3 °C (température), ±2 % (humidité)
+
+pays:
+  colombie:
+    code: CO
+    nom: Colombie
+    backend: complet
+    temperature:
+      cible: 26.0
+      min: 23.0
+      max: 29.0
+      tolerance: 3.0
+    humidite:
+      cible: 80.0
+      min: 78.0
+      max: 82.0
+      tolerance: 2.0
+    email_responsable_exploitation: exploitation.colombie@futurekawa.com
+
+  bresil:
+    code: BR
+    nom: Brésil
+    backend: mock
+    temperature:
+      cible: 29.0
+      min: 26.0
+      max: 32.0
+      tolerance: 3.0
+    humidite:
+      cible: 55.0
+      min: 53.0
+      max: 57.0
+      tolerance: 2.0
+    email_responsable_exploitation: exploitation.bresil@futurekawa.com
+
+  equateur:
+    code: EC
+    nom: Équateur
+    backend: mock
+    temperature:
+      cible: 31.0
+      min: 28.0
+      max: 34.0
+      tolerance: 3.0
+    humidite:
+      cible: 60.0
+      min: 58.0
+      max: 62.0
+      tolerance: 2.0
+    email_responsable_exploitation: exploitation.equateur@futurekawa.com
+
+alertes:
+  peremption_jours: 365
+  # Voir config/alerting.yaml — conditions : temps réel ; péremption : cron 06:00 America/Bogota

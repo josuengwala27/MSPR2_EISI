@@ -1,0 +1,55 @@
+# Configuration matérielle et IoT — FutureKawa Colombie
+# Décisions validées équipe (18 juin) — référence implémentation Berdan (étape 4)
+
+hardware:
+  board: ESP32-WROOM-32 (WiFi + Bluetooth)
+  sensor: DHT22
+  wiring:
+    vcc: "3.3V"
+    gnd: GND
+  data_pin:
+    label: D23
+    gpio: 23
+  pull_up_resistor:
+    value_ohms: 10000
+    note: "Vérifier module ; ajouter 10 kΩ DATA→VCC si lectures instables"
+
+# Identifiants métier (traçabilité entrepôt)
+site:
+  pays_code: CO
+  pays_nom: Colombie
+  entrepot_id: ENT-CO-BOGOTA-01
+  entrepot_nom: "Hub logistique Bogotá"
+  exploitation_id: EXP-CO-CUNDINAMARCA-01
+
+device:
+  id: FK-CO-ENT01-TH01
+  description: "Capteur température/humidité — zone stockage principale"
+  firmware: micropython
+
+mqtt:
+  # Convention topics : lowercase, code pays ISO, identifiant entrepôt
+  topic: futurekawa/co/ent-co-bogota-01/mesures
+  qos: 1
+  retain: false
+  publish_interval_seconds: 60
+  reconnect_interval_seconds: 5
+  broker:
+    production_host: mqtt.colombie.futurekawa.internal
+    port: 1883
+    demo_mode: true
+    demo_host_source: config.py
+
+payload:
+  format: json
+  champs:
+    - device_id
+    - entrepot_id
+    - temperature
+    - humidite
+    - horodatage
+
+wifi:
+  # Secrets uniquement dans iot/esp32_dht22/config.py (non versionné)
+  config_source: config.py
+  note: "Réseau entrepôt ou réseau labo EPSI — pas de credentials dans Git"

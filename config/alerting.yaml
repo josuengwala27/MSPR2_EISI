@@ -1,0 +1,34 @@
+# Politique d'alertes — FutureKawa MSPR TPRE814
+# Documentation complète : docs/ALERTING.md (étape 5)
+
+regles:
+  conditions_non_ideales:
+    declenchement: on_measure
+    description: "Évaluation immédiate à chaque mesure IoT reçue (temps réel)"
+    anti_spam_minutes: 30
+    description_anti_spam: "Pas de doublon email pour le même lot sous 30 min"
+
+  peremption:
+    declenchement: scheduled
+    cron: "0 6 * * *"
+    timezone: America/Bogota
+    description: "Contrôle quotidien à 06h00 heure Colombie — lot > 365 jours en stock"
+
+notifications:
+  canal: email
+  smtp_demo: mailhog
+  mailhog_ui: http://localhost:8025
+  destinataires:
+    colombie:
+      role: "Responsable d'exploitation"
+      email: exploitation.colombie@futurekawa.com
+    bresil:
+      role: "Responsable d'exploitation"
+      email: exploitation.bresil@futurekawa.com
+    equateur:
+      role: "Responsable d'exploitation"
+      email: exploitation.equateur@futurekawa.com
+
+contenu_email:
+  sujet_conditions: "[FutureKawa ALERTE] Conditions stockage — {pays} — Lot {lot_id}"
+  sujet_peremption: "[FutureKawa ALERTE] Péremption stock — {pays} — Lot {lot_id}"

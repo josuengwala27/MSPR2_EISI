@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/build/
+.npm
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env & secrets
+.env
+.env.local
+*.pem
+
+# Docker
+*.log
+
+# IoT / MicroPython
+iot/**/secrets.py
+iot/**/config.py
+iot/**/.mpy
+
+# Jenkins / CI artifacts
+*.war
+.jenkins/
+
+# Temp extracts (sujet PDF)
+_sujet_extract.txt
+_grille_extract.txt
+
+# Python virtual env in subprojects
+**/.venv/

@@ -1,0 +1,398 @@
+openapi: 3.0.3
+info:
+  title: FutureKawa MSPR TPRE814 — API v0
+  description: |
+    Contrat OpenAPI partagé équipe (étape 2).
+    - **Backend pays** (Colombie complet) : préfixe `/api/v1` sur port 8001
+    - **Backend siège** : préfixe `/api/v1` sur port 8000
+    - **Mocks BR/EC** : ports 8002 (BR), 8003 (EC)
+  version: 0.1.0
+  contact:
+    name: Équipe MSPR EISI
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Backend siège
+  - url: http://localhost:8001/api/v1
+    description: Backend pays Colombie
+  - url: http://localhost:8002/api/v1
+    description: Mock Brésil
+  - url: http://localhost:8003/api/v1
+    description: Mock Équateur
+
+tags:
+  - name: health
+  - name: lots
+  - name: mesures
+  - name: alertes
+  - name: pays
+  - name: erp
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Santé du service
+      responses:
+        "200":
+          description: Service opérationnel
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /lots:
+    get:
+      tags: [lots]
+      summary: Liste des lots (tri FIFO par date de stockage)
+      parameters:
+        - $ref: "#/components/parameters/EntrepotFilter"
+        - name: statut
+          in: query
+          schema:
+            $ref: "#/components/schemas/StatutLot"
+      responses:
+        "200":
+          description: Lots triés par date_stockage ASC
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lot"
+    post:
+      tags: [lots]
+      summary: Enregistrer un nouveau lot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LotCreate"
+      responses:
+        "201":
+          description: Lot créé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lot"
+
+  /lots/{lot_id}:
+    get:
+      tags: [lots]
+      summary: Détail d'un lot
+      parameters:
+        - $ref: "#/components/parameters/LotId"
+      responses:
+        "200":
+          description: Lot trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lot"
+        "404":
+          description: Lot introuvable
+
+  /lots/{lot_id}/mesures:
+    get:
+      tags: [mesures]
+      summary: Historique température / humidité depuis le stockage du lot
+      parameters:
+        - $ref: "#/components/parameters/LotId"
+        - name: depuis
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Série temporelle
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mesure"
+
+  /mesures/dernieres:
+    get:
+      tags: [mesures]
+      summary: Dernières mesures IoT de l'entrepôt
+      parameters:
+        - $ref: "#/components/parameters/EntrepotFilter"
+      responses:
+        "200":
+          description: Dernière mesure connue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mesure"
+
+  /alertes:
+    get:
+      tags: [alertes]
+      summary: Liste des alertes actives
+      parameters:
+        - name: pays
+          in: query
+          schema:
+            type: string
+            example: CO
+      responses:
+        "200":
+          description: Alertes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alerte"
+
+  /pays:
+  # --- Endpoints siège uniquement (préfixe agrégation) ---
+    get:
+      tags: [pays]
+      summary: "[Siège] Liste des pays / exploitations disponibles"
+      responses:
+        "200":
+          description: Pays configurés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaysResume"
+
+  /pays/{country_code}/lots:
+    get:
+      tags: [pays, lots]
+      summary: "[Siège] Lots d'un pays (proxy vers backend pays)"
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+      responses:
+        "200":
+          description: Lots consolidés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lot"
+        "502":
+          description: Backend pays indisponible
+
+  /pays/{country_code}/lots/{lot_id}:
+    get:
+      tags: [pays, lots]
+      summary: "[Siège] Détail lot d'un pays"
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/LotId"
+      responses:
+        "200":
+          description: Lot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lot"
+
+  /pays/{country_code}/lots/{lot_id}/mesures:
+    get:
+      tags: [pays, mesures]
+      summary: "[Siège] Historique mesures d'un lot"
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/LotId"
+      responses:
+        "200":
+          description: Mesures
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mesure"
+
+  /pays/{country_code}/alertes:
+    get:
+      tags: [pays, alertes]
+      summary: "[Siège] Alertes d'un pays"
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+      responses:
+        "200":
+          description: Alertes pays
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alerte"
+
+  /erp/sync:
+    post:
+      tags: [erp]
+      summary: "[Siège] Déclencher export / sync vers ERP"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pays:
+                  type: string
+                  example: CO
+                inclure_alertes:
+                  type: boolean
+                  default: true
+      responses:
+        "200":
+          description: Sync exécutée
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErpSyncResult"
+
+components:
+  parameters:
+    LotId:
+      name: lot_id
+      in: path
+      required: true
+      schema:
+        type: string
+        example: LOT-CO-2026-001
+    CountryCode:
+      name: country_code
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [CO, BR, EC]
+    EntrepotFilter:
+      name: entrepot
+      in: query
+      schema:
+        type: string
+        example: ENT-CO-BOGOTA-01
+
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, service]
+      properties:
+        status:
+          type: string
+          example: ok
+        service:
+          type: string
+          example: backend-pays-colombie
+
+    StatutLot:
+      type: string
+      enum: [conforme, alerte, perime]
+
+    TypeAlerte:
+      type: string
+      enum: [conditions_non_ideales, peremption]
+
+    LotCreate:
+      type: object
+      required: [id, pays, exploitation, entrepot, date_stockage]
+      properties:
+        id:
+          type: string
+          example: LOT-CO-2026-001
+        pays:
+          type: string
+          example: CO
+        exploitation:
+          type: string
+          example: EXP-CO-NORTE
+        entrepot:
+          type: string
+          example: ENT-CO-BOGOTA-01
+        date_stockage:
+          type: string
+          format: date-time
+
+    Lot:
+      allOf:
+        - $ref: "#/components/schemas/LotCreate"
+        - type: object
+          required: [statut]
+          properties:
+            statut:
+              $ref: "#/components/schemas/StatutLot"
+
+    Mesure:
+      type: object
+      required: [temperature, humidite, horodatage, entrepot]
+      properties:
+        id:
+          type: integer
+        entrepot:
+          type: string
+        lot_id:
+          type: string
+          nullable: true
+        temperature:
+          type: number
+          format: float
+          example: 26.5
+        humidite:
+          type: number
+          format: float
+          example: 79.2
+        horodatage:
+          type: string
+          format: date-time
+
+    Alerte:
+      type: object
+      required: [id, type, lot_id, pays, message, created_at, resolue]
+      properties:
+        id:
+          type: integer
+        type:
+          $ref: "#/components/schemas/TypeAlerte"
+        lot_id:
+          type: string
+        pays:
+          type: string
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        resolue:
+          type: boolean
+
+    PaysResume:
+      type: object
+      properties:
+        code:
+          type: string
+          example: CO
+        nom:
+          type: string
+          example: Colombie
+        statut_backend:
+          type: string
+          enum: [complet, mock]
+        url_backend:
+          type: string
+          example: http://backend-pays-colombie:8001
+
+    ErpSyncResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        lots_exportes:
+          type: integer
+        alertes_exportees:
+          type: integer
+        fichier:
+          type: string
+          nullable: true

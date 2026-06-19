@@ -1,0 +1,45 @@
+# Mapping intégration ERP (option B) — FutureKawa siège
+# Couche opérationnelle (notre app) → système ERP existant
+# Implémentation complète : étape 8
+
+erp:
+  nom: ERP_FutureKawa_Siege
+  mode: export_periodique
+  format: json
+
+champs_lot:
+  - source: id
+    cible_erp: LOT_ID
+    type: string
+    obligatoire: true
+  - source: pays
+    cible_erp: COUNTRY_CODE
+    type: string
+    obligatoire: true
+  - source: exploitation
+    cible_erp: FARM_CODE
+    type: string
+    obligatoire: true
+  - source: entrepot
+    cible_erp: WAREHOUSE_CODE
+    type: string
+    obligatoire: true
+  - source: date_stockage
+    cible_erp: STORAGE_START_DATE
+    type: datetime
+    obligatoire: true
+  - source: statut
+    cible_erp: QUALITY_STATUS
+    type: enum
+    valeurs: [CONFORME, ALERTE, PERIME]
+    obligatoire: true
+
+champs_alerte:
+  - source: lot_id
+    cible_erp: LOT_ID
+  - source: type
+    cible_erp: ALERT_TYPE
+  - source: message
+    cible_erp: ALERT_DESCRIPTION
+  - source: created_at
+    cible_erp: ALERT_TIMESTAMP

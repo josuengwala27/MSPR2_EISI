@@ -1,0 +1,79 @@
+# FutureKawa MSPR — stack de démonstration
+# Étape 2 : squelette — services fonctionnels complets en étape 3+
+
+services:
+  postgres-colombie:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: futurekawa
+      POSTGRES_PASSWORD: futurekawa
+      POSTGRES_DB: futurekawa_co
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_co:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U futurekawa -d futurekawa_co"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mosquitto-colombie:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  backend-pays-colombie:
+    build: ./backend-pays-colombie
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: postgresql://futurekawa:futurekawa@postgres-colombie:5432/futurekawa_co
+      MQTT_HOST: mosquitto-colombie
+      MQTT_PORT: 1883
+      COUNTRY_CODE: CO
+    depends_on:
+      postgres-colombie:
+        condition: service_healthy
+      mosquitto-colombie:
+        condition: service_started
+
+  backend-siege:
+    build: ./backend-siege
+    ports:
+      - "8000:8000"
+    environment:
+      BACKEND_CO_URL: http://backend-pays-colombie:8001
+      BACKEND_BR_URL: http://mock-bresil:8002
+      BACKEND_EC_URL: http://mock-equateur:8003
+    depends_on:
+      - backend-pays-colombie
+
+  mock-bresil:
+    build: ./mocks/backends-br-ec
+    ports:
+      - "8002:8002"
+
+  mock-equateur:
+    build: ./mocks/backends-br-ec
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
+    ports:
+      - "8003:8003"
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend-siege
+
+volumes:
+  pgdata_co:

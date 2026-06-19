@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    environment {
+        COMPOSE_PROJECT_NAME = 'futurekawa-mspr'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checkout — à configurer avec URL repo (étape 9)'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'pytest backend-pays-colombie/tests — étape 9'
+            }
+        }
+
+        stage('Build Docker') {
+            steps {
+                echo 'docker compose build — étape 9'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline OK'
+        }
+        failure {
+            echo 'Pipeline KO'
+        }
+    }
+}

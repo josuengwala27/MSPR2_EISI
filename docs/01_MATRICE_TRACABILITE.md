@@ -145,7 +145,7 @@
 | 4 | Dossier technique argumenté | `docs/04_DOSSIER_TECHNIQUE.md` | ⬜ | Josué (+ tous) |
 | 5 | Pipelines CI/CD Jenkins | `jenkins/` | ⬜ | Berdan |
 | 6 | Tests manuels lançables | `docs/06_TESTS_MANUELS.md` | ⬜ | Berdan |
-| 7 | Code source Git | Repo complet + `README.md` | ⬜ | Tous |
+| 7 | Code source Git | Repo complet + `README.md` | 🔄 poussé, à cloner par l'équipe | Tous |
 | 8 | Documentation utilisateur | `docs/08_GUIDE_UTILISATEUR.md` | ⬜ | Rahma |
 | 9 | Schéma automatisation phase 2 | `docs/schemas/automatisation_phase2.png` | ⬜ | Josué |
 | 10 | Questionnaire phase 2 | `docs/10_QUESTIONNAIRE_PHASE2.md` | ⬜ | Josué |
@@ -236,7 +236,7 @@
 | **0** | Cadrage projet | 18 juin | ✅ | Josué |
 | **0bis** | Stratégie C4 ERP (option B) | 18 juin | ✅ | Josué |
 | **1** | Matrice de traçabilité | 18 juin | ✅ | Josué |
-| **2** | Architecture + repo Git | 19–20 juin | 🔄 | Josué |
+| **2** | Architecture + repo Git | 19–20 juin | ✅ | Josué |
 | **3** | Backend pays Colombie | 21–24 juin | ⬜ | Anis |
 | **4** | Module IoT ESP32 + DHT22 | 23–25 juin | ⬜ | Berdan |
 | **5** | Alertes + emails | 25–26 juin | ⬜ | Berdan + Anis |
@@ -336,11 +336,11 @@
 
 **Critère de validation (gate)**
 
-- [x] Repo initialisé (`git init`) — à pousser sur remote pour clonage équipe
-- [ ] Schéma architecture relu et approuvé par l'équipe
+- [x] Repo initialisé (`git init`) — poussé sur https://github.com/josuengwala27/MSPR2_EISI
+- [x] Schéma architecture relu et approuvé par l'équipe
 - [x] OpenAPI v0 partagé → Rahma peut démarrer le frontend en étape 7
 
-**Statut** : 🔄 — fondations posées le 18 juin · validation équipe en attente
+**Statut** : ✅ Validé le 19 juin
 
 ---
 
@@ -762,7 +762,8 @@
 | Date | Étape en cours | Bloquants | Décisions | Prochaine action |
 |------|----------------|-----------|-----------|------------------|
 | 18 juin | 1 ✅ | — | Stack + rôles + Colombie validés | Démarrer étape 2 |
-| 18 juin | 2 🔄 | Remote Git à créer | MicroPython · OpenAPI v0 · monorepo · **paramètres IoT/alertes figés** (GPIO D23, 60s MQTT, alertes temps réel) | Pousser repo · valider étape 2 · Anis → étape 3 |
+| 18 juin | 2 🔄 | Remote Git à créer | MicroPython · OpenAPI v0 · monorepo · paramètres IoT/alertes figés | Pousser repo · valider étape 2 |
+| 19 juin | 2 ✅ | Git initiaillé par erreur dans `C:\Users\josue` (corrigé) | Équipe valide étape 2 · push `main` sur GitHub | Anis → étape 3 backend Colombie |
 
 ---
 

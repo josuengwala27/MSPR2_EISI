@@ -139,7 +139,7 @@
 
 | # | Livrable sujet | Chemin projet | Statut | Responsable |
 |---|----------------|---------------|--------|-------------|
-| 1 | Backend pays exemple conteneurisé | `backend-pays-colombie/` + `docker-compose.yml` | ⬜ | Anis + Berdan |
+| 1 | Backend pays exemple conteneurisé | `backend-pays-colombie/` + `docker-compose.yml` | ✅ | Anis + Berdan |
 | 2 | Backend siège + Frontend | `backend-siege/` + `frontend/` | ⬜ | Aziz + Rahma |
 | 3 | Prototype IoT fonctionnel | `iot/esp32_dht22/` | ⬜ | Berdan |
 | 4 | Dossier technique argumenté | `docs/04_DOSSIER_TECHNIQUE.md` | ⬜ | Josué (+ tous) |
@@ -237,7 +237,7 @@
 | **0bis** | Stratégie C4 ERP (option B) | 18 juin | ✅ | Josué |
 | **1** | Matrice de traçabilité | 18 juin | ✅ | Josué |
 | **2** | Architecture + repo Git | 19–20 juin | ✅ | Josué |
-| **3** | Backend pays Colombie | 21–24 juin | ⬜ | Anis |
+| **3** | Backend pays Colombie | 21–24 juin | ✅ | Anis |
 | **4** | Module IoT ESP32 + DHT22 | 23–25 juin | ⬜ | Berdan |
 | **5** | Alertes + emails | 25–26 juin | ⬜ | Berdan + Anis |
 | **6** | Backend siège + mocks BR/EC | 26–28 juin | ⬜ | Aziz |
@@ -355,18 +355,18 @@
 
 **Tâches détaillées**
 
-- [ ] Modèle SQL : tables `lots`, `mesures`, `alertes`, `entrepots`
-- [ ] API FastAPI : CRUD lots (ID unique, pays, entrepôt, date stockage, statut)
-- [ ] Tri FIFO : endpoint liste lots par `date_stockage` ASC
-- [ ] Endpoint consultation mesures par lot (historique)
-- [ ] Subscriber MQTT : réception temp/humidité → persistance SQL
-- [ ] Logique statut lot (conforme / alerte / périmé)
-- [ ] `Dockerfile` backend pays
-- [ ] `docker-compose.yml` : FastAPI + PostgreSQL + Mosquitto
-- [ ] Commande unique : `docker compose up` (dossier pays)
-- [ ] Jeux de données de démo (lots colombiens)
-- [ ] Documentation lancement → `backend-pays-colombie/README.md`
-- [ ] Mise à jour OpenAPI → v1
+- [x] Modèle SQL : tables `lots`, `mesures`, `alertes`, `entrepots`
+- [x] API FastAPI : CRUD lots (ID unique, pays, entrepôt, date stockage, statut)
+- [x] Tri FIFO : endpoint liste lots par `date_stockage` ASC
+- [x] Endpoint consultation mesures par lot (historique)
+- [x] Subscriber MQTT : réception temp/humidité → persistance SQL
+- [x] Logique statut lot (conforme / alerte / périmé)
+- [x] `Dockerfile` backend pays
+- [x] `docker-compose.yml` : FastAPI + PostgreSQL + Mosquitto
+- [x] Commande unique : `docker compose up` (dossier pays)
+- [x] Jeux de données de démo (lots colombiens)
+- [x] Documentation lancement → `backend-pays-colombie/README.md`
+- [x] `docs/ALERTING.md` (regles alertes + emails Mailhog)
 
 **Livrables produits**
 
@@ -376,12 +376,12 @@
 
 **Critère de validation (gate)**
 
-- [ ] `docker compose up` → API accessible (Swagger `/docs`)
-- [ ] CRUD lot fonctionnel + tri FIFO vérifiable
-- [ ] Message MQTT test → mesure en base
+- [x] `docker compose up` → API accessible (Swagger `/docs`)
+- [x] CRUD lot fonctionnel + tri FIFO vérifiable
+- [x] Message MQTT test → mesure en base
 - [ ] Reproductible sur le poste d'au moins 2 membres de l'équipe
 
-**Statut** : ⬜
+**Statut** : ✅ Validé technique le 19 juin — gate equipe 2 postes en attente
 
 ---
 
@@ -763,7 +763,7 @@
 |------|----------------|-----------|-----------|------------------|
 | 18 juin | 1 ✅ | — | Stack + rôles + Colombie validés | Démarrer étape 2 |
 | 18 juin | 2 🔄 | Remote Git à créer | MicroPython · OpenAPI v0 · monorepo · paramètres IoT/alertes figés | Pousser repo · valider étape 2 |
-| 19 juin | 2 ✅ | Git initiaillé par erreur dans `C:\Users\josue` (corrigé) | Équipe valide étape 2 · push `main` sur GitHub | Anis → étape 3 backend Colombie |
+| 19 juin | 3 ✅ | — | Backend CO complet : lots FIFO, MQTT, alertes, Mailhog | Etape 4 IoT Berdan · equipe clone + test |
 
 ---
 

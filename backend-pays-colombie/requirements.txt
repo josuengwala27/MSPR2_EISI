@@ -8,4 +8,4 @@ paho-mqtt>=2.1.0
 pyyaml>=6.0.2
 httpx>=0.28.0
 python-multipart>=0.0.17
-aiosmtplib>=3.0.2
+apscheduler>=3.10.4

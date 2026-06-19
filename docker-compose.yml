@@ -33,7 +33,16 @@ services:
       DATABASE_URL: postgresql://futurekawa:futurekawa@postgres-colombie:5432/futurekawa_co
       MQTT_HOST: mosquitto-colombie
       MQTT_PORT: 1883
+      MQTT_TOPIC: futurekawa/co/ent-co-bogota-01/mesures
       COUNTRY_CODE: CO
+      CONFIG_DIR: /config
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_FROM: noreply@futurekawa.com
+      ALERT_EMAIL_TO: exploitation.colombie@futurekawa.com
+      SEED_DEMO_DATA: "true"
+    volumes:
+      - ./config:/config:ro
     depends_on:
       postgres-colombie:
         condition: service_healthy

@@ -91,12 +91,15 @@ services:
       backend-pays-colombie:
         condition: service_started
 
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - backend-siege
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000/api/v1
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend-siege
 
 volumes:
   pgdata_co:

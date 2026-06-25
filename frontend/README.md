@@ -1,15 +1,36 @@
-# Frontend FutureKawa
+# FutureKawa — Frontend React
 
-React + Chart.js — interface siège (consultation stocks, courbes, alertes).
+Console siege premium : stocks multi-pays, courbes IoT Chart.js, alertes.
 
-**Étape 7** — squelette à initialiser avec Vite :
+## Stack
 
-```bash
-npm create vite@latest . -- --template react
-npm install chart.js react-chartjs-2
+- React 18 + TypeScript + Vite
+- Tailwind CSS (theme cafe premium, dark)
+- Chart.js + react-chartjs-2
+- React Router
+
+## Developpement
+
+```powershell
+cd frontend
+npm install
+npm run dev
 ```
 
-Contrat API : `docs/openapi/openapi-v0.yaml`  
-Base URL siège : `http://localhost:8000/api/v1`
+Ouvrir http://localhost:3000 (API siege sur :8000).
+
+## Docker
+
+```powershell
+docker compose up -d --build frontend
+```
+
+http://localhost:3000
+
+## Test etape 7
+
+```powershell
+.\scripts\test_etape7.ps1
+```
 
 **Responsable** : Rahma

@@ -511,15 +511,15 @@
 
 **Tâches détaillées**
 
-- [ ] Setup React (Vite recommandé) + Chart.js
-- [ ] Écran sélection pays / exploitation
-- [ ] Liste lots triés par date de stockage (FIFO visuel)
-- [ ] Fiche lot : statut, détail, indicateurs alerte
-- [ ] Courbes température + humidité (historique depuis stockage)
-- [ ] Vue alertes : liste + accès rapide
-- [ ] UX lisible « terrain » + exploitable « siège »
-- [ ] Connexion API siège (variables d'env)
-- [ ] Dockerfile frontend + intégration compose racine
+- [x] Setup React (Vite) + Chart.js + TypeScript + Tailwind
+- [x] Écran sélection pays / exploitation
+- [x] Liste lots triés par date de stockage (FIFO visuel)
+- [x] Fiche lot : statut, détail, indicateurs alerte
+- [x] Courbes température + humidité (historique depuis stockage)
+- [x] Vue alertes : liste + filtres par pays
+- [x] UX premium responsive (desktop / tablette / mobile)
+- [x] Connexion API siège (VITE_API_URL)
+- [x] Dockerfile frontend + nginx + docker-compose
 - [ ] Captures d'écran pour doc utilisateur (étape 10)
 
 **Livrables produits**
@@ -530,11 +530,12 @@
 
 **Critère de validation (gate)**
 
-- [ ] Parcours complet : pays → lots → lot → courbes → alertes
-- [ ] Données Colombie live + BR/EC mock affichées correctement
+- [x] Parcours complet : pays → lots → lot → courbes → alertes
+- [x] Données Colombie live + BR/EC mock affichées correctement
+- [x] Script test `scripts/test_etape7.ps1`
 - [ ] Testé sur navigateur de 2 membres minimum
 
-**Statut** : ⬜
+**Statut** : ✅
 
 ---
 
@@ -768,6 +769,7 @@
 | 19 juin | 4 ✅ | — | Firmware ESP32, simulateur MQTT, cablage, dossier § 4.2 | Test hardware Berdan · Etape 5/6 |
 | 25 juin | 5 ✅ | — | Alertes conditions + peremption, emails Mailhog, test_etape5.ps1 | Etape 6 backend siege Aziz |
 | 25 juin | 6 ✅ | — | Siege multi-pays, mocks BR/EC, test_etape6.ps1 | Etape 7 frontend Rahma |
+| 25 juin | 7 ✅ | — | Frontend React premium responsive, Chart.js, Docker | Etape 8 ERP Josue |
 
 ---
 

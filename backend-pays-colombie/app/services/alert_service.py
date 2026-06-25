@@ -96,7 +96,7 @@ def evaluate_conditions_for_entrepot(
         db.add(alerte)
         db.flush()
 
-        subject = f"[FutureKawa ALERTE] Conditions stockage — {lot.pays} — Lot {lot.id}"
+        subject = f"[FutureKawa ALERTE] Conditions stockage - {lot.pays} - Lot {lot.id}"
         if _send_email(subject, message, seuils.email):
             alerte.email_envoye = True
 
@@ -133,7 +133,7 @@ def check_peremption(db: Session, peremption_jours: int) -> int:
         db.add(alerte)
         db.flush()
 
-        subject = f"[FutureKawa ALERTE] Peremption stock — {lot.pays} — Lot {lot.id}"
+        subject = f"[FutureKawa ALERTE] Peremption stock - {lot.pays} - Lot {lot.id}"
         if _send_email(subject, message, seuils.email):
             alerte.email_envoye = True
         count += 1

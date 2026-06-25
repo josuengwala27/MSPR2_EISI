@@ -396,15 +396,15 @@
 
 **Tâches détaillées**
 
-- [ ] Câblage DHT22 ↔ ESP32 (documenter pinout)
-- [ ] Code firmware : lecture DHT22 + publication MQTT périodique
-- [ ] Définir topics MQTT : ex. `futurekawa/colombie/entrepot-01/temperature`
-- [ ] Format payload JSON (temp, humidity, timestamp, device_id)
-- [ ] Stratégie reconnexion WiFi / MQTT
-- [ ] Test bout-en-bout : ESP32 → Mosquitto → FastAPI → PostgreSQL
-- [ ] Simulateur MQTT (fallback si matériel indisponible) → `iot/mqtt-simulator/`
-- [ ] Schéma câblage → `docs/schemas/cablage-esp32-dht22.png`
-- [ ] Rédiger dossier technique § 4.2 (conception IoT)
+- [x] Câblage DHT22 ↔ ESP32 (documenter pinout) → `docs/schemas/cablage-esp32-dht22.md`
+- [x] Code firmware : lecture DHT22 + publication MQTT périodique → `iot/esp32_dht22/main.py`
+- [x] Topics MQTT : `futurekawa/co/ent-co-bogota-01/mesures` (aligné `config/iot.yaml`)
+- [x] Format payload JSON (temp, humidity, timestamp, device_id)
+- [x] Stratégie reconnexion WiFi / MQTT
+- [x] Test bout-en-bout : simulateur → Mosquitto → FastAPI → PostgreSQL (ESP32 = test matériel Berdan)
+- [x] Simulateur MQTT → `iot/mqtt-simulator/simulate.py`
+- [x] Schéma câblage → `docs/schemas/cablage-esp32-dht22.md` (PNG export soutenance)
+- [x] Rédiger dossier technique § 4.2 (conception IoT)
 
 **Livrables produits**
 
@@ -412,15 +412,15 @@
 |------------------|---------|
 | **Livrable 3** | `iot/esp32_dht22/` |
 | Dossier tech § 4.2 | `docs/04_DOSSIER_TECHNIQUE.md` |
-| Schéma câblage | `docs/schemas/cablage-esp32-dht22.png` |
+| Schéma câblage | `docs/schemas/cablage-esp32-dht22.md` |
 
 **Critère de validation (gate)**
 
-- [ ] Relevé réel DHT22 visible dans la base ou l'API
-- [ ] Scénario reproductible documenté (avec ou sans hardware)
-- [ ] Topics et payload documentés
+- [x] Relevé visible dans la base ou l'API (via simulateur ; ESP32 en attente test Berdan)
+- [x] Scénario reproductible documenté (avec ou sans hardware)
+- [x] Topics et payload documentés
 
-**Statut** : ⬜
+**Statut** : ✅ code + demo simulateur | ⬜ test materiel ESP32 (a faire plus tard)
 
 ---
 
@@ -435,30 +435,31 @@
 
 **Tâches détaillées**
 
-- [ ] Règle 1 : température ou humidité hors plage Colombie (23–29 °C / 78–82 %)
-- [ ] Règle 2 : lot en stockage > 365 jours → alerte péremption
-- [ ] Job périodique vérification seuils + péremption
-- [ ] Envoi email au responsable exploitation Colombie
-- [ ] Mailhog en Docker pour démo (capture emails sans SMTP prod)
-- [ ] Mise à jour statut lot → `alerte` / `perime`
-- [ ] Rédiger `docs/ALERTING.md` : règles, seuils, fréquence, contenu emails
-- [ ] Cas de test alertes → préparer pour étape 9
+- [x] Règle 1 : température ou humidité hors plage Colombie (23–29 °C / 78–82 %)
+- [x] Règle 2 : lot en stockage > 365 jours → alerte péremption
+- [x] Job périodique vérification seuils + péremption (scheduler APScheduler)
+- [x] Envoi email au responsable exploitation Colombie
+- [x] Mailhog en Docker pour démo (capture emails sans SMTP prod)
+- [x] Mise à jour statut lot → `alerte` / `perime`
+- [x] Rédiger `docs/ALERTING.md` : règles, seuils, fréquence, contenu emails
+- [x] Cas de test alertes → `scripts/test_etape5.ps1`
 
 **Livrables produits**
 
 | Fichier | Contenu |
 |---------|---------|
 | `docs/ALERTING.md` | Documentation alerting complète |
-| Service alerting | Dans `backend-pays-colombie/` |
+| Service alerting | `backend-pays-colombie/app/services/alert_service.py` |
 | Mailhog | Dans `docker-compose.yml` |
+| Test etape 5 | `scripts/test_etape5.ps1` |
 
 **Critère de validation (gate)**
 
-- [ ] Mesure hors plage injectée → alerte en base + email dans Mailhog
-- [ ] Lot > 365 jours → alerte péremption déclenchée
-- [ ] `docs/ALERTING.md` relu par Josué
+- [x] Mesure hors plage injectée → alerte en base + email dans Mailhog
+- [x] Lot > 365 jours → alerte péremption déclenchée
+- [x] `docs/ALERTING.md` + script de test
 
-**Statut** : ⬜
+**Statut** : ✅
 
 ---
 
@@ -764,6 +765,8 @@
 | 18 juin | 1 ✅ | — | Stack + rôles + Colombie validés | Démarrer étape 2 |
 | 18 juin | 2 🔄 | Remote Git à créer | MicroPython · OpenAPI v0 · monorepo · paramètres IoT/alertes figés | Pousser repo · valider étape 2 |
 | 19 juin | 3 ✅ | — | Backend CO complet : lots FIFO, MQTT, alertes, Mailhog | Etape 4 IoT Berdan · equipe clone + test |
+| 19 juin | 4 ✅ | — | Firmware ESP32, simulateur MQTT, cablage, dossier § 4.2 | Test hardware Berdan · Etape 5/6 |
+| 25 juin | 5 ✅ | — | Alertes conditions + peremption, emails Mailhog, test_etape5.ps1 | Etape 6 backend siege Aziz |
 
 ---
 

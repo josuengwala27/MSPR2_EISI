@@ -26,6 +26,7 @@ def list_alertes(
             message=a.message,
             created_at=a.created_at,
             resolue=a.resolue,
+            email_envoye=a.email_envoye,
         )
         for a in alertes
     ]

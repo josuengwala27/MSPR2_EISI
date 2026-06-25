@@ -54,6 +54,7 @@ class AlerteResponse(BaseModel):
     message: str
     created_at: datetime
     resolue: bool
+    email_envoye: bool = False
 
     model_config = {"from_attributes": True}
 

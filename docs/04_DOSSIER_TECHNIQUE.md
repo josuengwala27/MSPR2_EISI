@@ -88,11 +88,65 @@ L'ERP au siège reste le **système de gestion intégré** (achats, ventes, comp
 
 ## 4.2 Conception du module IoT
 
-*À compléter étape 4 — Berdan*
+### Materiel
 
-- Schéma câblage DHT22
-- Topics MQTT, payload, fréquence
-- Stratégie reconnexion / gestion erreurs
+| Composant | Reference |
+|-----------|-----------|
+| Carte | ESP32-WROOM-32 (WiFi + BT) |
+| Capteur | DHT22 |
+| Broche DATA | GPIO **D23** (GPIO 23) |
+
+Schema cablage : `docs/schemas/cablage-esp32-dht22.md`
+
+### Firmware
+
+- **Runtime** : MicroPython
+- **Fichier principal** : `iot/esp32_dht22/main.py`
+- **Configuration locale** : `iot/esp32_dht22/config.py` (non versionne)
+
+### Protocole MQTT
+
+| Element | Valeur |
+|---------|--------|
+| Topic | `futurekawa/co/ent-co-bogota-01/mesures` |
+| QoS | 1 |
+| Frequence | 60 secondes |
+| Broker demo | IP LAN poste Docker, port 1883 |
+| Broker prod. | `mqtt.colombie.futurekawa.internal` |
+
+**Payload JSON :**
+
+```json
+{
+  "device_id": "FK-CO-ENT01-TH01",
+  "entrepot_id": "ENT-CO-BOGOTA-01",
+  "temperature": 26.5,
+  "humidite": 79.0,
+  "horodatage": "2026-06-19T15:30:00Z"
+}
+```
+
+Le backend Colombie (`mqtt_subscriber.py`) persiste la mesure et evalue les seuils.
+
+### Reconnexion et gestion d'erreurs
+
+- **WiFi** : jusqu'a 20 tentatives, reconnexion dans la boucle principale
+- **MQTT** : connexion a chaque cycle, deconnexion propre apres publish
+- **DHT22** : 3 tentatives de lecture, delai 2 s (contrainte capteur)
+- **NTP** : synchronisation horaire si disponible (`ntptime`)
+
+### Fallback demo
+
+Simulateur Python : `iot/mqtt-simulator/simulate.py` (si ESP32 indisponible).
+
+### Limites et risques
+
+| Risque | Mitigation |
+|--------|------------|
+| Reseau WiFi instable | Reconnexion automatique |
+| Lecture DHT22 erronnee | Retry + pull-up 10 kOhm |
+| Horodatage incorrect sans NTP | Backend complete `horodatage` si absent |
+| IP broker change | Documenter `ipconfig` dans config.py |
 
 ---
 

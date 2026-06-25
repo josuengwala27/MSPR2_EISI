@@ -77,6 +77,16 @@ services:
       - "1025:1025"
       - "8025:8025"
 
+  # Remplace l'ESP32 quand le materiel n'est pas branche (profile demo)
+  iot-simulator:
+    profiles: ["demo"]
+    build: ./iot/mqtt-simulator
+    depends_on:
+      mosquitto-colombie:
+        condition: service_started
+      backend-pays-colombie:
+        condition: service_started
+
   # frontend:
   #   build: ./frontend
   #   ports:

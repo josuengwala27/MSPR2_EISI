@@ -1,7 +1,12 @@
-# Mocks Brésil & Équateur
+# Mocks backends Brésil & Équateur
 
-APIs légères avec jeux de données fictifs (seuils BR : 29°C/55%, EC : 31°C/60%).
+API FastAPI légère mimant le backend pays Colombie avec données fixtures.
 
-**Responsable** : Aziz (étape 6)
+| Pays | Port | Seuils demo |
+|------|------|-------------|
+| BR | 8002 | 29 °C / 55 % |
+| EC | 8003 | 31 °C / 60 % |
 
-En étape 2 : squelette sur port 8002. Le mock Équateur (8003) sera ajouté en étape 6 ou via second service Compose.
+Variable `COUNTRY_CODE` : `BR` ou `EC`.
+
+**Responsable** : Aziz

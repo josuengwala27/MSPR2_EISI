@@ -64,12 +64,16 @@ services:
     build: ./mocks/backends-br-ec
     ports:
       - "8002:8002"
+    environment:
+      COUNTRY_CODE: BR
 
   mock-equateur:
     build: ./mocks/backends-br-ec
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
     ports:
       - "8003:8003"
+    environment:
+      COUNTRY_CODE: EC
 
   mailhog:
     image: mailhog/mailhog

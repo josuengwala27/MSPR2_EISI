@@ -1,19 +1,22 @@
 # FutureKawa — Backend siège
 
-Agrégation des backends pays (Colombie live + mocks BR/EC), exposition au frontend, connecteur ERP (étape 8).
+Agrégation des backends pays (Colombie live + mocks BR/EC).
 
-## Endpoints prévus
+## Endpoints
 
-Voir `docs/openapi/openapi-v0.yaml` — section siège (`/pays`, `/erp/sync`).
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/v1/pays` | Liste des 3 pays + disponibilité |
+| `GET /api/v1/pays/{code}/lots` | Proxy lots par pays |
+| `GET /api/v1/pays/{code}/alertes` | Proxy alertes par pays |
+| `GET /api/v1/stocks` | Stocks consolidés (3 pays) |
+| `GET /api/v1/alertes/consolidees` | Alertes consolidées |
 
-## Développement local
+## Test
 
-```bash
-cd backend-siege
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+```powershell
+docker compose up -d --build
+.\scripts\test_etape6.ps1
 ```
 
 Swagger : http://localhost:8000/docs

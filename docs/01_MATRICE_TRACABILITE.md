@@ -474,15 +474,15 @@
 
 **Tâches détaillées**
 
-- [ ] API FastAPI siège : agrégation stocks / mesures / alertes
-- [ ] Client HTTP vers API Colombie (réelle)
-- [ ] Mocks Brésil + Équateur : `mocks/backends-br-ec/` (FastAPI léger ou fixtures JSON)
-- [ ] Jeux de données BR (29 °C / 55 %) et EC (31 °C / 60 %)
-- [ ] Endpoints siège : liste pays, stocks consolidés, alertes consolidées
-- [ ] Gestion indisponibilité pays (timeout, message d'erreur propre)
-- [ ] `docker-compose.yml` racine : orchestration pays + siège + mocks + frontend
-- [ ] Mise à jour OpenAPI siège → v1
-- [ ] Justification architecture (résilience, découpage) → dossier § 4.1
+- [x] API FastAPI siège : agrégation stocks / mesures / alertes
+- [x] Client HTTP vers API Colombie (réelle)
+- [x] Mocks Brésil + Équateur : `mocks/backends-br-ec/` (FastAPI + fixtures)
+- [x] Jeux de données BR (29 °C / 55 %) et EC (31 °C / 60 %)
+- [x] Endpoints siège : liste pays, stocks consolidés, alertes consolidées
+- [x] Gestion indisponibilité pays (timeout, HTTP 502)
+- [x] `docker-compose.yml` racine : orchestration pays + siège + mocks
+- [x] OpenAPI siège aligné (`docs/openapi/openapi-v0.yaml`)
+- [x] Script test `scripts/test_etape6.ps1`
 
 **Livrables produits**
 
@@ -492,11 +492,11 @@
 
 **Critère de validation (gate)**
 
-- [ ] Siège retourne données des 3 pays
-- [ ] Colombie = données live ; BR/EC = mocks crédibles
-- [ ] Panne simulée mock → siège gère l'erreur sans crash
+- [x] Siège retourne données des 3 pays
+- [x] Colombie = données live ; BR/EC = mocks crédibles
+- [x] Panne simulée mock → siège gère l'erreur sans crash (502)
 
-**Statut** : ⬜
+**Statut** : ✅
 
 ---
 
@@ -767,6 +767,7 @@
 | 19 juin | 3 ✅ | — | Backend CO complet : lots FIFO, MQTT, alertes, Mailhog | Etape 4 IoT Berdan · equipe clone + test |
 | 19 juin | 4 ✅ | — | Firmware ESP32, simulateur MQTT, cablage, dossier § 4.2 | Test hardware Berdan · Etape 5/6 |
 | 25 juin | 5 ✅ | — | Alertes conditions + peremption, emails Mailhog, test_etape5.ps1 | Etape 6 backend siege Aziz |
+| 25 juin | 6 ✅ | — | Siege multi-pays, mocks BR/EC, test_etape6.ps1 | Etape 7 frontend Rahma |
 
 ---
 

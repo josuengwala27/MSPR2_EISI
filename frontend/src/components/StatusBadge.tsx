@@ -7,12 +7,12 @@ const config: Record<StatutLot, { label: string; className: string; dot: string 
     dot: "bg-emerald-400",
   },
   alerte: {
-    label: "Alerte",
+    label: "À surveiller",
     className: "bg-amber-500/15 text-amber-300 border-amber-500/30",
     dot: "bg-amber-400 animate-pulse-soft",
   },
   perime: {
-    label: "Perime",
+    label: "Périmé",
     className: "bg-rose-500/15 text-rose-300 border-rose-500/30",
     dot: "bg-rose-400",
   },

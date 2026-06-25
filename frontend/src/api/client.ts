@@ -19,4 +19,7 @@ export const api = {
     fetchJson<import("../types").Mesure[]>(`/pays/${code}/lots/${lotId}/mesures`),
   getAlertesPays: (code: string) =>
     fetchJson<import("../types").Alerte[]>(`/pays/${code}/alertes`),
+  getSurveillance: () => fetchJson<import("../types").SurveillanceEntrepot[]>("/iot/surveillance"),
+  getSurveillancePays: (code: string) =>
+    fetchJson<import("../types").SurveillanceEntrepot>(`/iot/surveillance/${code}`),
 };

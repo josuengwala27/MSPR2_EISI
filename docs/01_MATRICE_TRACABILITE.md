@@ -517,10 +517,11 @@
 - [x] Fiche lot : statut, détail, indicateurs alerte
 - [x] Courbes température + humidité (historique depuis stockage)
 - [x] Vue alertes : liste + filtres par pays
-- [x] UX premium responsive (desktop / tablette / mobile)
+- [x] Page surveillance capteurs IoT (`/iot`) + fiche détail par pays
+- [x] Libellés métier (masquage IDs techniques), favicon, accents français
 - [x] Connexion API siège (VITE_API_URL)
 - [x] Dockerfile frontend + nginx + docker-compose
-- [ ] Captures d'écran pour doc utilisateur (étape 10)
+- [x] Captures d'écran pour doc utilisateur (`docs/screenshots/`)
 
 **Livrables produits**
 

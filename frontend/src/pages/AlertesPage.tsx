@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bell, Mail, Filter } from "lucide-react";
+import { Bell, BellRing, Filter } from "lucide-react";
 import { api } from "../api/client";
 import type { Alerte } from "../types";
-import { COUNTRY_META } from "../types";
+import { ALERTE_LABELS, COUNTRY_META } from "../types";
 import { PageHeader } from "../components/Layout";
 
 export function AlertesPage() {
@@ -26,19 +26,19 @@ export function AlertesPage() {
   return (
     <div>
       <PageHeader
-        title="Centre d'alertes"
-        subtitle="Alertes conditions et peremption consolidees sur les 3 pays."
+        title="Alertes"
+        subtitle="Notifications sur les conditions de stockage et la durée de conservation de vos lots."
       />
 
       <div className="mb-6 flex flex-wrap items-center gap-2">
         <Filter className="h-4 w-4 text-stone-500" />
-        <FilterBtn active={filter === "all"} onClick={() => setFilter("all")} label="Tous" />
+        <FilterBtn active={filter === "all"} onClick={() => setFilter("all")} label="Tous les sites" />
         {paysCodes.map((code) => (
           <FilterBtn
             key={code}
             active={filter === code}
             onClick={() => setFilter(code)}
-            label={`${COUNTRY_META[code]?.flag ?? ""} ${code}`}
+            label={`${COUNTRY_META[code]?.flag ?? ""} ${COUNTRY_META[code] ? code : code}`}
           />
         ))}
       </div>
@@ -52,7 +52,8 @@ export function AlertesPage() {
       ) : filtered.length === 0 ? (
         <div className="glass-card flex flex-col items-center py-16 text-center">
           <Bell className="h-12 w-12 text-stone-600" />
-          <p className="mt-4 text-stone-400">Aucune alerte active</p>
+          <p className="mt-4 text-stone-400">Aucune alerte en cours</p>
+          <p className="mt-1 text-sm text-stone-600">Tous vos stocks sont dans les normes.</p>
         </div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-2">
@@ -65,23 +66,23 @@ export function AlertesPage() {
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+                  <span className="text-xs font-medium text-stone-500">
                     {COUNTRY_META[a.pays]?.flag} {a.pays_nom ?? a.pays}
                   </span>
                   <h3 className="mt-1 font-semibold text-white">
                     <Link to={`/pays/${a.pays}/lots/${a.lot_id}`} className="hover:text-coffee-400">
-                      {a.lot_id}
+                      Lot {a.lot_id}
                     </Link>
                   </h3>
                 </div>
                 <span
-                  className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ${
+                  className={`rounded-full px-2.5 py-1 text-xs font-medium ${
                     a.type === "peremption"
                       ? "bg-rose-500/20 text-rose-300"
                       : "bg-amber-500/20 text-amber-300"
                   }`}
                 >
-                  {a.type.replace("_", " ")}
+                  {ALERTE_LABELS[a.type] ?? a.type}
                 </span>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-stone-400">{a.message}</p>
@@ -89,7 +90,7 @@ export function AlertesPage() {
                 <span>{new Date(a.created_at).toLocaleString("fr-FR")}</span>
                 {a.email_envoye && (
                   <span className="inline-flex items-center gap-1 text-emerald-500">
-                    <Mail className="h-3.5 w-3.5" /> Email envoye
+                    <BellRing className="h-3.5 w-3.5" /> Responsable notifié
                   </span>
                 )}
               </div>
@@ -112,6 +113,7 @@ function FilterBtn({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`rounded-full px-4 py-1.5 text-xs font-medium transition ${
         active

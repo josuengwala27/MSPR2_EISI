@@ -58,8 +58,33 @@ export interface AlertesConsolidees {
   alertes: Alerte[];
 }
 
-export const COUNTRY_META: Record<string, { flag: string; gradient: string; seuils: string }> = {
-  CO: { flag: "🇨🇴", gradient: "from-amber-500/20 to-yellow-600/5", seuils: "23–29 °C · 78–82 %" },
-  BR: { flag: "🇧🇷", gradient: "from-emerald-500/20 to-green-600/5", seuils: "26–32 °C · 53–57 %" },
-  EC: { flag: "🇪🇨", gradient: "from-sky-500/20 to-blue-600/5", seuils: "28–34 °C · 58–62 %" },
+export interface SurveillanceEntrepot {
+  pays: string;
+  pays_nom: string;
+  entrepot_id: string;
+  entrepot_nom: string;
+  temperature?: number | null;
+  humidite?: number | null;
+  horodatage?: string | null;
+  conditions_ok?: boolean | null;
+  actif: boolean;
+  seuils_temp: string;
+  seuils_hum: string;
+}
+
+export const COUNTRY_META: Record<string, { flag: string; gradient: string; seuilsLabel: string }> = {
+  CO: { flag: "🇨🇴", gradient: "from-amber-500/20 to-yellow-600/5", seuilsLabel: "23–29 °C · 78–82 %" },
+  BR: { flag: "🇧🇷", gradient: "from-emerald-500/20 to-green-600/5", seuilsLabel: "26–32 °C · 53–57 %" },
+  EC: { flag: "🇪🇨", gradient: "from-sky-500/20 to-blue-600/5", seuilsLabel: "28–34 °C · 58–62 %" },
+};
+
+export const ALERTE_LABELS: Record<string, string> = {
+  conditions_non_ideales: "Conditions de stockage",
+  peremption: "Durée de stockage",
+};
+
+export const PAYS_NOMS: Record<string, string> = {
+  CO: "Colombie",
+  BR: "Brésil",
+  EC: "Équateur",
 };

@@ -6,6 +6,7 @@ import type { Lot, PaysResume } from "../types";
 import { COUNTRY_META } from "../types";
 import { BreadcrumbLink, PageHeader } from "../components/Layout";
 import { StatusBadge } from "../components/StatusBadge";
+import { formatEntrepot } from "../utils/labels";
 
 export function PaysListPage() {
   const [pays, setPays] = useState<PaysResume[]>([]);
@@ -17,7 +18,10 @@ export function PaysListPage() {
 
   return (
     <div>
-      <PageHeader title="Pays & exploitations" subtitle="Selectionnez un pays pour consulter les lots en FIFO." />
+      <PageHeader
+        title="Stocks par pays"
+        subtitle="Consultez vos lots de café vert classés par priorité de sortie."
+      />
       <div className="grid gap-4 md:grid-cols-3">
         {loading
           ? [1, 2, 3].map((i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-white/5" />)
@@ -27,9 +31,9 @@ export function PaysListPage() {
                 <Link key={p.code} to={`/pays/${p.code}`} className="glass-card-hover block p-6">
                   <span className="text-4xl">{meta?.flag}</span>
                   <h2 className="mt-4 font-display text-2xl font-bold text-white">{p.nom}</h2>
-                  <p className="mt-2 text-sm text-stone-500">{meta?.seuils}</p>
+                  <p className="mt-2 text-sm text-stone-500">Conservation : {meta?.seuilsLabel}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm text-coffee-400">
-                    Explorer <ArrowRight className="h-4 w-4" />
+                    Voir les lots <ArrowRight className="h-4 w-4" />
                   </span>
                 </Link>
               );
@@ -53,10 +57,10 @@ export function CountryLotsPage() {
 
   return (
     <div>
-      <BreadcrumbLink to="/pays" label="Tous les pays" />
+      <BreadcrumbLink to="/pays" label="Tous les stocks" />
       <PageHeader
-        title={`${meta?.flag ?? ""} Lots — ${code}`}
-        subtitle={`Tri FIFO par date de stockage · Seuils ${meta?.seuils}`}
+        title={`Lots — ${meta?.flag ?? ""} ${code ?? ""}`}
+        subtitle={`Classement par date d'entrée en stock (les plus anciens en premier) · Conservation ${meta?.seuilsLabel}`}
       />
 
       {loading ? (
@@ -64,6 +68,10 @@ export function CountryLotsPage() {
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-20 animate-pulse rounded-xl bg-white/5" />
           ))}
+        </div>
+      ) : lots.length === 0 ? (
+        <div className="glass-card py-16 text-center text-stone-500">
+          Aucun lot en stock pour ce pays.
         </div>
       ) : (
         <div className="space-y-3">
@@ -81,11 +89,11 @@ export function CountryLotsPage() {
                   <p className="font-semibold text-white">{lot.id}</p>
                   <div className="mt-1 flex flex-wrap gap-3 text-xs text-stone-500">
                     <span className="inline-flex items-center gap-1">
-                      <Warehouse className="h-3.5 w-3.5" /> {lot.entrepot}
+                      <Warehouse className="h-3.5 w-3.5" /> {formatEntrepot(lot.entrepot)}
                     </span>
                     <span className="inline-flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" />
-                      {new Date(lot.date_stockage).toLocaleDateString("fr-FR")}
+                      Entré le {new Date(lot.date_stockage).toLocaleDateString("fr-FR")}
                     </span>
                   </div>
                 </div>

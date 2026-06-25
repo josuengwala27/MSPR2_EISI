@@ -1,7 +1,8 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  Globe2,
+  Package,
+  Radio,
   Bell,
   Menu,
   X,
@@ -11,9 +12,10 @@ import {
 import { useState } from "react";
 
 const nav = [
-  { to: "/", icon: LayoutDashboard, label: "Tableau de bord" },
-  { to: "/pays", icon: Globe2, label: "Pays & lots" },
-  { to: "/alertes", icon: Bell, label: "Alertes" },
+  { to: "/", icon: LayoutDashboard, label: "Tableau de bord", short: "Accueil" },
+  { to: "/pays", icon: Package, label: "Stocks", short: "Stocks" },
+  { to: "/iot", icon: Radio, label: "Capteurs", short: "Capteurs" },
+  { to: "/alertes", icon: Bell, label: "Alertes", short: "Alertes" },
 ];
 
 export function Layout() {
@@ -24,7 +26,6 @@ export function Layout() {
 
   return (
     <div className="flex min-h-dvh">
-      {/* Overlay mobile */}
       {sidebarOpen && (
         <button
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
@@ -33,7 +34,6 @@ export function Layout() {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-white/5 bg-surface/95 backdrop-blur-xl transition-transform duration-300 lg:static lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -46,7 +46,7 @@ export function Layout() {
             </div>
             <div>
               <p className="font-display text-lg font-bold text-white">FutureKawa</p>
-              <p className="text-xs text-stone-500">Console siege</p>
+              <p className="text-xs text-stone-500">Suivi café vert</p>
             </div>
           </div>
           <button className="rounded-lg p-2 text-stone-400 hover:bg-white/5 lg:hidden" onClick={closeSidebar}>
@@ -77,13 +77,12 @@ export function Layout() {
 
         <div className="border-t border-white/5 p-4">
           <div className="rounded-xl bg-gradient-to-br from-coffee-900/40 to-transparent p-4">
-            <p className="text-xs font-medium text-coffee-300">MSPR TPRE814</p>
-            <p className="mt-1 text-xs text-stone-500">IoT multi-pays · Cafe vert</p>
+            <p className="text-xs font-medium text-coffee-300">Traçabilite multi-sites</p>
+            <p className="mt-1 text-xs text-stone-500">Colombie · Brésil · Équateur</p>
           </div>
         </div>
       </aside>
 
-      {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-white/5 bg-[#0a0908]/80 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
           <button
@@ -99,20 +98,14 @@ export function Layout() {
               FutureKawa / <span className="text-stone-300">{breadcrumb(location.pathname)}</span>
             </p>
           </div>
-
-          <div className="hidden items-center gap-2 sm:flex">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse-soft" />
-            <span className="text-xs text-stone-500">Systeme operationnel</span>
-          </div>
         </header>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <Outlet />
         </main>
 
-        {/* Bottom nav mobile */}
         <nav className="fixed bottom-0 left-0 right-0 z-30 flex border-t border-white/10 bg-surface/95 backdrop-blur-xl lg:hidden">
-          {nav.map(({ to, icon: Icon, label }) => (
+          {nav.map(({ to, icon: Icon, short }) => (
             <NavLink
               key={to}
               to={to}
@@ -124,7 +117,7 @@ export function Layout() {
               }
             >
               <Icon className="h-5 w-5" />
-              <span>{label.split(" ")[0]}</span>
+              <span>{short}</span>
             </NavLink>
           ))}
         </nav>
@@ -136,11 +129,13 @@ export function Layout() {
 
 function breadcrumb(path: string): string {
   if (path === "/") return "Tableau de bord";
-  if (path.startsWith("/pays/") && path.split("/").length > 3) return "Detail lot";
-  if (path.startsWith("/pays/")) return "Lots pays";
-  if (path === "/pays") return "Pays";
+  if (path.startsWith("/iot/")) return "Fiche entrepôt";
+  if (path === "/iot") return "Capteurs";
+  if (path.startsWith("/pays/") && path.split("/").length > 3) return "Détail du lot";
+  if (path.startsWith("/pays/")) return "Lots";
+  if (path === "/pays") return "Stocks";
   if (path === "/alertes") return "Alertes";
-  return "Console";
+  return "Accueil";
 }
 
 export function PageHeader({
@@ -167,7 +162,7 @@ export function PageHeader({
 
 export function BreadcrumbLink({ to, label }: { to: string; label: string }) {
   return (
-    <NavLink to={to} className="inline-flex items-center gap-1 text-sm text-coffee-400 hover:text-coffee-300">
+    <NavLink to={to} className="mb-4 inline-flex items-center gap-1 text-sm text-coffee-400 hover:text-coffee-300">
       <ChevronRight className="h-4 w-4 rotate-180" />
       {label}
     </NavLink>

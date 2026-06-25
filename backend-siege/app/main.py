@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import consolidation, debug, health, pays
+from app.routers import consolidation, debug, health, iot, pays
 from app.services.country_client import PAYS_CONFIG
 
 logging.basicConfig(level=logging.INFO)
@@ -27,6 +27,7 @@ app.add_middleware(
 app.include_router(health.router, prefix="/api/v1")
 app.include_router(pays.router, prefix="/api/v1")
 app.include_router(consolidation.router, prefix="/api/v1")
+app.include_router(iot.router, prefix="/api/v1")
 app.include_router(debug.router, prefix="/api/v1")
 
 

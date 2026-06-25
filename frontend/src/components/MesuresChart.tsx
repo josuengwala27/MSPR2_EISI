@@ -36,7 +36,7 @@ export function MesuresChart({ mesures }: Props) {
     labels,
     datasets: [
       {
-        label: "Temperature (C)",
+        label: "Température (°C)",
         data: sorted.map((m) => m.temperature),
         borderColor: "#f59e0b",
         backgroundColor: "rgba(245, 158, 11, 0.08)",
@@ -47,7 +47,7 @@ export function MesuresChart({ mesures }: Props) {
         yAxisID: "y",
       },
       {
-        label: "Humidite (%)",
+        label: "Humidité (%)",
         data: sorted.map((m) => m.humidite),
         borderColor: "#38bdf8",
         backgroundColor: "rgba(56, 189, 248, 0.06)",
@@ -104,8 +104,9 @@ export function MesuresChart({ mesures }: Props) {
 
   if (sorted.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center text-stone-500">
-        Aucune mesure disponible
+      <div className="flex h-64 flex-col items-center justify-center gap-2 text-stone-500">
+        <p>Aucune mesure disponible pour le moment.</p>
+        <p className="text-xs text-stone-600">Les données apparaîtront dès la prochaine transmission capteur.</p>
       </div>
     );
   }
